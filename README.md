@@ -1,6 +1,6 @@
-# FreightPilot — Baton Freight Intelligence Platform
+# FreightPilot — Real-Time Freight Intelligence Platform
 
-> Near real-time freight event streaming pipeline with ML anomaly detection, ETA prediction, and LLM-powered rerouting. Built as a take-home project targeting [Baton (A Ryder Technology Lab)](https://baton.com).
+> Near real-time freight event streaming pipeline with ML anomaly detection, ETA prediction, and LLM-powered rerouting.
 
 **Live Dashboard → [buvanipai.github.io/baton-freight-pilot](https://buvanipai.github.io/baton-freight-pilot/)**  
 **API → [freightpilot-api-t75n.onrender.com](https://freightpilot-api-t75n.onrender.com/docs)**

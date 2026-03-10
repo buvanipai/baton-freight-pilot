@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FreightPilot — Baton</title>
+  <title>FreightPilot</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -71,7 +71,7 @@ function Header({ health }) {
     <header className="bg-indigo-700 text-white px-6 py-4 flex items-center justify-between shadow-lg">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">FreightPilot</h1>
-        <p className="text-indigo-200 text-xs mt-0.5">Baton — A Ryder Technology Lab</p>
+        <p className="text-indigo-200 text-xs mt-0.5">Real-Time Freight Intelligence</p>
       </div>
       <div className="flex items-center gap-3 text-sm">
         <span className={`w-2.5 h-2.5 rounded-full inline-block ${ok ? 'bg-green-400' : 'bg-red-400'}`}></span>
@@ -565,7 +565,7 @@ function WakeUpScreen({ seconds }) {
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-indigo-950 text-white px-6">
       <h1 className="text-4xl font-bold tracking-tight mb-1">FreightPilot</h1>
-      <p className="text-indigo-300 text-sm mb-10">Baton — A Ryder Technology Lab</p>
+      <p className="text-indigo-300 text-sm mb-10">Real-Time Freight Intelligence</p>
       <div className="spinner text-indigo-300 mb-8" style={{width:'3rem',height:'3rem',borderWidth:'4px'}}></div>
       <p className="text-lg font-semibold mb-2">{step}</p>
       <p className="text-indigo-400 text-sm text-center max-w-xs">
