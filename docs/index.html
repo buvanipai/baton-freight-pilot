@@ -550,17 +550,57 @@ function ShipmentsTable() {
   );
 }
 
+// ─── WakeUpScreen ───────────────────────────────────────────────────────────
+
+function WakeUpScreen({ seconds }) {
+  const steps = [
+    'Connecting to database…',
+    'Warming up Redis Streams…',
+    'Loading ML models…',
+    'Fitting anomaly detector…',
+    'Almost ready…',
+  ];
+  const step = steps[Math.min(Math.floor(seconds / 10), steps.length - 1)];
+
+  return (
+    <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-indigo-950 text-white px-6">
+      <h1 className="text-4xl font-bold tracking-tight mb-1">FreightPilot</h1>
+      <p className="text-indigo-300 text-sm mb-10">Baton — A Ryder Technology Lab</p>
+      <div className="spinner text-indigo-300 mb-8" style={{width:'3rem',height:'3rem',borderWidth:'4px'}}></div>
+      <p className="text-lg font-semibold mb-2">{step}</p>
+      <p className="text-indigo-400 text-sm text-center max-w-xs">
+        Deployed on Render's free tier — cold start takes ~30–60 seconds.
+      </p>
+      {seconds >= 5 && (
+        <p className="text-indigo-500 text-xs mt-6">{seconds}s elapsed</p>
+      )}
+    </div>
+  );
+}
+
 // ─── App ─────────────────────────────────────────────────────────────────────
 
 const TABS = ['Exceptions', 'All Shipments'];
 
 function App() {
-  const [health, setHealth]   = useState(null);
-  const [activeTab, setActiveTab] = useState('Exceptions');
+  const [health, setHealth]           = useState(null);
+  const [activeTab, setActiveTab]     = useState('Exceptions');
+  const [serverReady, setServerReady] = useState(false);
+  const [wakeSeconds, setWakeSeconds] = useState(0);
+
+  // Tick elapsed seconds until the server responds
+  useEffect(() => {
+    if (serverReady) return;
+    const t = setInterval(() => setWakeSeconds(s => s + 1), 1000);
+    return () => clearInterval(t);
+  }, [serverReady]);
 
   useEffect(() => {
     function checkHealth() {
-      fetch(`${API_BASE_URL}/health`).then(r => r.json()).then(setHealth).catch(() => setHealth(null));
+      fetch(`${API_BASE_URL}/health`)
+        .then(r => r.json())
+        .then(d => { setHealth(d); setServerReady(true); })
+        .catch(() => setHealth(null));
     }
     checkHealth();
     const t = setInterval(checkHealth, 30_000);
@@ -569,6 +609,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      {!serverReady && <WakeUpScreen seconds={wakeSeconds} />}
       <Header health={health} />
       <main className="max-w-screen-2xl mx-auto px-4 sm:px-6 py-6">
         <PipelineMetrics />
