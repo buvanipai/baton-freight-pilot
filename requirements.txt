@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+redis
+psycopg2-binary
+pandas
+numpy
+scikit-learn
+langchain
+langchain-anthropic
+anthropic
+pydantic
+python-dotenv
+slowapi
+httpx
+joblib
