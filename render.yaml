@@ -16,7 +16,7 @@ services:
     plan: free
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python db/seed.py && uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    startCommand: python db/schema_apply.py && python db/seed_restore.py && uvicorn api.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: DATABASE_URL
         fromDatabase:
