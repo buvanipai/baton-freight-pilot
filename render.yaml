@@ -30,4 +30,4 @@ services:
       - key: ANTHROPIC_API_KEY
         sync: false
       - key: CORS_ORIGINS
-        value: https://buvanipai.github.io,https://buvanipai.github.io/baton-freight-pilot
+        value: https://buvanipai.github.io,https://buvanipai.github.io/freight-pilot

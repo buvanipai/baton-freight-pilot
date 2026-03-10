@@ -2,7 +2,7 @@
 
 > Near real-time freight event streaming pipeline with ML anomaly detection, ETA prediction, and LLM-powered rerouting.
 
-**Live Dashboard → [buvanipai.github.io/baton-freight-pilot](https://buvanipai.github.io/baton-freight-pilot/)**  
+**Live Dashboard → [buvanipai.github.io/freight-pilot](https://buvanipai.github.io/freight-pilot/)**  
 **API → [freightpilot-api-t75n.onrender.com](https://freightpilot-api-t75n.onrender.com/docs)**
 
 > The API runs on Render's free tier and spins down after 15 minutes of inactivity. First load may take 30–60 seconds to cold-start.
