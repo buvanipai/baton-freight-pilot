@@ -10,8 +10,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-REDIS_URL = os.environ["REDIS_URL"]
-DATABASE_URL = os.environ["DATABASE_URL"]
 STREAM_NAME = "freight-events"
 GROUP_NAME = "freightpilot-consumers"
 CONSUMER_NAME = "consumer-1"
@@ -136,8 +134,8 @@ def insert_metrics(conn, r, events_processed, latencies):
 
 
 def main():
-    r = redis.from_url(REDIS_URL, decode_responses=True)
-    conn = psycopg2.connect(DATABASE_URL)
+    r = redis.from_url(os.environ["REDIS_URL"], decode_responses=True)
+    conn = psycopg2.connect(os.environ["DATABASE_URL"])
 
     print("[consumer] Connected to Redis and PostgreSQL")
     create_consumer_group(r)

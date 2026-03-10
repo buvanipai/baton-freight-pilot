@@ -298,9 +298,17 @@ def run_schema(conn):
 
 
 def main():
-    conn = psycopg2.connect(DATABASE_URL)
+    conn = psycopg2.connect(os.environ["DATABASE_URL"])
 
     run_schema(conn)
+
+    # Skip if already seeded (idempotent for container/service restarts)
+    with conn.cursor() as cur:
+        cur.execute("SELECT COUNT(*) FROM carriers")
+        if cur.fetchone()[0] > 0:
+            print("[seed] Data already present, skipping.")
+            conn.close()
+            return
 
     # Truncate
     with conn.cursor() as cur:

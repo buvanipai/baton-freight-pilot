@@ -11,8 +11,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-REDIS_URL = os.environ["REDIS_URL"]
-DATABASE_URL = os.environ["DATABASE_URL"]
 STREAM_NAME = "freight-events"
 
 LOCATIONS = [
@@ -64,8 +62,8 @@ def inject_exception(conn, shipment):
 
 
 def main():
-    r = redis.from_url(REDIS_URL, decode_responses=True)
-    conn = psycopg2.connect(DATABASE_URL)
+    r = redis.from_url(os.environ["REDIS_URL"], decode_responses=True)
+    conn = psycopg2.connect(os.environ["DATABASE_URL"])
 
     print(f"[producer] Connected to Redis and PostgreSQL")
     shipments = load_shipment_ids(conn)

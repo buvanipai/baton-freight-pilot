@@ -1,0 +1,33 @@
+databases:
+  - name: freightpilot-db
+    databaseName: freightpilot
+    user: freightpilot
+    plan: free
+
+services:
+  - type: redis
+    name: freightpilot-redis
+    plan: free
+    maxmemoryPolicy: allkeys-lru
+    ipAllowList: []
+
+  - type: web
+    name: freightpilot-api
+    plan: free
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python db/seed.py && uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: freightpilot-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: freightpilot-redis
+          property: connectionString
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        value: https://buvanipai.github.io,https://buvanipai.github.io/baton-freight-pilot

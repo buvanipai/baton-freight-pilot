@@ -1,6 +1,7 @@
 # api/main.py
 
 import os
+import threading
 from contextlib import asynccontextmanager, contextmanager
 from datetime import datetime, timezone
 
@@ -18,6 +19,8 @@ from starlette.requests import Request
 
 from api.agent import propose_reroute
 from api.models import AnomalyDetector, ETAPredictor
+from producer.main import main as producer_main
+from consumer.main import main as consumer_main
 
 load_dotenv()
 
@@ -57,6 +60,11 @@ async def lifespan(app: FastAPI):
     _state["anomaly_detector"] = anomaly_detector
     _state["eta_predictor"] = eta_predictor
 
+    for name, target in (("producer", producer_main), ("consumer", consumer_main)):
+        t = threading.Thread(target=target, name=name, daemon=True)
+        t.start()
+        print(f"[api] Started {name} thread")
+
     print("[api] Startup complete")
     yield
 
@@ -66,9 +74,14 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="FreightPilot API", lifespan=lifespan)
+_CORS_ORIGINS = [o.strip() for o in os.environ.get(
+    "CORS_ORIGINS",
+    "http://localhost:3000,http://127.0.0.1:3000"
+).split(",") if o.strip()]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=_CORS_ORIGINS,
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
